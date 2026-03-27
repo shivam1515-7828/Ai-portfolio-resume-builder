@@ -1,0 +1,21 @@
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { verifyToken } from "@/lib/auth";
+import { generateLinkedInSummary } from "@/lib/ai";
+
+export async function POST(req: Request) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token || !verifyToken(token)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { userData, tone } = await req.json();
+    const linkedinSummary = await generateLinkedInSummary(userData, tone);
+
+    return NextResponse.json({ linkedinSummary }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
