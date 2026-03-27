@@ -7,16 +7,16 @@ if (!cached) {
 }
 
 async function dbConnect() {
-  const uri = process.env.MONGODB_URI;
-  
-  // Only throw at RUNTIME if someone actually tries to connect without a URI
-  if (!uri) {
-    if (process.env.NODE_ENV === "production") {
-       console.warn("MONGODB_URI is missing. Database connection will fail.");
-       return; // Silent fail at build for better deployment, but will fail at actual request
-    }
-    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
-  }
+   if (cached.conn) {
+     return cached.conn;
+   }
+ 
+   const MONGODB_URI = process.env.MONGODB_URI;
+ 
+   if (!MONGODB_URI) {
+     console.warn("MONGODB_URI is not set in environment variables.");
+     return; // Never throw during build
+   }
 
   if (cached.conn) {
     return cached.conn;
@@ -27,7 +27,7 @@ async function dbConnect() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(uri, opts).then((m) => m);
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => m);
   }
   cached.conn = await cached.promise;
   return cached.conn;
