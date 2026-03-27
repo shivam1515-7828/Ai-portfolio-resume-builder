@@ -169,8 +169,8 @@ export default function ResumeForm({ initialData, onUpdate }: { initialData: Res
       setData(newData);
       onUpdate(newData);
       toast.success("AI Content Generated & Applied!");
-    } catch {
-      toast.error("AI Generation failed. Check API Key or Input Data.");
+    } catch (err: any) {
+      toast.error(err.response?.data?.error || "AI Generation failed. Check API Key or Input Data.");
     } finally {
       setGenerating(false);
     }

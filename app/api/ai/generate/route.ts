@@ -16,6 +16,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ aiContent }, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("AI Generation API Error:", error.response?.data || error.message);
+    return NextResponse.json({ 
+       error: error.response?.data?.error?.message || error.message || "Failed to generate content" 
+    }, { status: 500 });
   }
 }
