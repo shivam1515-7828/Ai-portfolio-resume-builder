@@ -54,6 +54,11 @@ CareerAI is a premium, full-stack application built with Next.js 14, Tailwind CS
    npm run build
    npm start
    ```
+## 🌐 Live Demo
 
+🚀 Experience CareerAI in action:  
+👉 https://ai-resume-portfolio-builder-six.vercel.app/
+
+> Deployed on Vercel for fast, scalable performance.
 ## Contributing
 Enjoy building your career! 🚀
